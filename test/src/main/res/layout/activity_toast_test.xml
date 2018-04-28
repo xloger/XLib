@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ToastTestActivity"
+    android:orientation="vertical"
+    >
+    <Button
+        android:id="@+id/toast_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="toast 测试"
+        />
+
+    <Button
+        android:id="@+id/toast_app_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="app toast 测试"
+        />
+    <Button
+        android:id="@+id/toast_thread_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="线程 toast"
+        />
+</LinearLayout>
