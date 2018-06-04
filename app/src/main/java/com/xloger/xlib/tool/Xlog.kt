@@ -103,7 +103,7 @@ object Xlog {
      * 在非主线程调用时，可以弹出 toast，但是没法即时修改内容。
      */
     fun toast(context: Context, text: String) {
-        if (!XTool.isOnMainThread()) {
+        if (!XTool.isOnMainThread) {
             Xlog.e("没有在主线程调用 toast")
             Looper.prepare()
             //            return;
@@ -124,7 +124,7 @@ object Xlog {
         }
 
         log("toast", text)
-        if (!XTool.isOnMainThread()) {
+        if (!XTool.isOnMainThread) {
             Looper.loop()
         }
     }
@@ -134,7 +134,7 @@ object Xlog {
     }
 
     fun dialog(context: Context, title: String, message: String, yesText: String, noText: String, neutralText: String, listener: DialogOnClickListener) {
-        if (!XTool.isOnMainThread()) {
+        if (!XTool.isOnMainThread) {
             Xlog.e("没有在主线程调用 dialog")
             return
         }
