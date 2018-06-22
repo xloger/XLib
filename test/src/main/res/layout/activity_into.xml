@@ -19,5 +19,11 @@
         android:layout_height="wrap_content"
         android:text="toast 测试"
         />
+    <Button
+        android:id="@+id/into_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="log 测试"
+        />
 
 </LinearLayout>

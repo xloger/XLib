@@ -17,7 +17,7 @@ import org.jetbrains.anko.internals.AnkoInternals
  * Email:phoenix@xloger.com
  */
 
-object XActivity : AppCompatActivity() {
+open class XActivity : AppCompatActivity() {
 
     @JvmOverloads
     fun startActivity(context: Context, cls: Class<*>, extras: Bundle? = null) {

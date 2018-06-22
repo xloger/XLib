@@ -18,5 +18,8 @@ class IntoActivity : AppCompatActivity() {
         into_toast.setOnClickListener {
             startActivity<ToastTestActivity>()
         }
+        into_log.setOnClickListener {
+            startActivity<LogTestActivity>()
+        }
     }
 }
