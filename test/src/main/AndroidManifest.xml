@@ -25,7 +25,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".activity.XPermissionTestActivity"></activity>
+        <activity android:name=".activity.XPermissionTestActivity" />
         <activity android:name=".activity.ToastTestActivity" />
         <activity android:name=".activity.IntoActivity">
             <intent-filter>
@@ -34,7 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LogTestActivity"></activity>
+        <activity android:name=".activity.LogTestActivity" />
+        <activity android:name=".activity.FastAdapterTestActivity"></activity>
     </application>
 
 </manifest>

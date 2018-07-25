@@ -21,5 +21,8 @@ class IntoActivity : AppCompatActivity() {
         into_log.setOnClickListener {
             startActivity<LogTestActivity>()
         }
+        into_adapter.setOnClickListener {
+            startActivity<FastAdapterTestActivity>()
+        }
     }
 }

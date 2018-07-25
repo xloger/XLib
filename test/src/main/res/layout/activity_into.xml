@@ -26,4 +26,11 @@
         android:text="log 测试"
         />
 
+    <Button
+        android:id="@+id/into_adapter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adapter 测试"
+        />
+
 </LinearLayout>

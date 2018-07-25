@@ -1,5 +1,6 @@
 package com.xloger.xlib.tool
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import android.os.Vibrator
@@ -39,6 +40,15 @@ object XTool {
         val date = Date(System.currentTimeMillis())
         println(date.toString())
         Xlog.debug("$description 时间：$date")
+    }
+
+    /**
+     * 震动手机，需要对应权限
+     */
+    @SuppressLint("MissingPermission")
+    fun vibrate(context: Context) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(200)
     }
 
 }
