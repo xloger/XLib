@@ -5,13 +5,13 @@ package com.xloger.xlib.flux
  * Author: xloger
  * Email:phoenix@xloger.com
  */
-abstract class Store {
+abstract class FluxStore {
     fun register(view: Any) {
-
+        XEvent.register(view)
     }
 
     fun unregister(view: Any) {
-        XEvent.register(view)
+        XEvent.unregister(view)
     }
 
     fun emitStoreChange(type: String = "") {
@@ -20,7 +20,7 @@ abstract class Store {
 
     abstract fun changeEvent(type: String = "") : StoreChangeEvent
 
-    abstract fun onAction(action: Action<*>)
+    abstract fun onAction(action: FluxAction<*>)
 
     open class StoreChangeEvent(val type: String)
 }

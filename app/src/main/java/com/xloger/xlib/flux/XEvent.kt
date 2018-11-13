@@ -8,25 +8,25 @@ import org.greenrobot.eventbus.EventBus
  * Author: xloger
  * Email:phoenix@xloger.com
  */
-class XEvent {
+object XEvent {
 
-    companion object {
-        val event = EventBus.getDefault()
+    val event = EventBus.getDefault()
 
-        fun register(any: Any) {
-            if (!event.isRegistered(any)){
-                event.register(any)
-            }
-        }
-
-        fun post(any: Any) {
-            event.post(any)
-        }
-
-        fun postSticky(any: Any) {
-            event.postSticky(any)
+    fun register(any: Any) {
+        if (!event.isRegistered(any)){
+            event.register(any)
         }
     }
 
+    fun unregister(any: Any) {
+        event.unregister(any)
+    }
 
+    fun post(any: Any) {
+        event.post(any)
+    }
+
+    fun postSticky(any: Any) {
+        event.postSticky(any)
+    }
 }

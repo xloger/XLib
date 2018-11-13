@@ -11,37 +11,37 @@ import kotlin.properties.Delegates
  * Email:phoenix@xloger.com
  */
 abstract class FluxBaseFragment : XBaseFragment() {
-    var dispatcher by Delegates.notNull<Dispatcher>()
-    var actionCreator by Delegates.notNull<ActionCreator>()
-    var store : Store? = null
+    var dispatcher by Delegates.notNull<FluxDispatcher>()
+//    var actionCreator by Delegates.notNull<FluxActionCreator>()
+    var fluxStore : FluxStore? = null
 
-    protected fun initDependencies(store: Store) {
-        dispatcher = Dispatcher.instance
-        actionCreator = ActionCreator.get(dispatcher)!!
-        this.store = store
-        dispatcher.register(store)
-        store.register(this)
+    protected fun initDependencies(fluxStore: FluxStore) {
+        dispatcher = FluxDispatcher.INSTANCE
+//        actionCreator = FluxActionCreator.get(dispatcher)
+        this.fluxStore = fluxStore
+        dispatcher.register(fluxStore)
+        fluxStore.register(this)
     }
 
     override fun onResume() {
         super.onResume()
-        store?.register(this)
+        fluxStore?.register(this)
     }
 
     override fun onPause() {
         super.onPause()
-        store?.unregister(this)
+        fluxStore?.unregister(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        store?.let { dispatcher.unregister(it) }
+        fluxStore?.let { dispatcher.unregister(it) }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onFluxStoreChange(event: Store.StoreChangeEvent) {
+    fun onFluxStoreChange(event: FluxStore.StoreChangeEvent) {
         onStoreChange(event)
     }
 
-    abstract fun onStoreChange(event: Store.StoreChangeEvent)
+    abstract fun onStoreChange(event: FluxStore.StoreChangeEvent)
 }

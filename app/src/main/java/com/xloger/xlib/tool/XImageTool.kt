@@ -173,7 +173,7 @@ object XImageTool {
     /**
      * 配合 chooseImage 方法使用，返回图片真实路径。
      */
-    fun onChooseImageResult(requestCode: Int, resultCode: Int, data: Intent?, context: Context) : String {
+    fun onChooseImageResultooseImageResult(requestCode: Int, resultCode: Int, data: Intent?, context: Context) : String {
         var path: String = ""
         val data1 = data?.data
         if (data1 == null) {
