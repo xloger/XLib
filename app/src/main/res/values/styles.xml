@@ -8,6 +8,10 @@
         <!--<item name="colorAccent">@color/colorAccent</item>-->
     <!--</style>-->
 
-
+    <declare-styleable name="XButton">
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="backgroundNormal" format="color" />
+        <attr name="backgroundHover" format="color" />
+    </declare-styleable>
 
 </resources>

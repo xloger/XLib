@@ -21,7 +21,7 @@ class FastAdapterTestActivity : AppCompatActivity() {
         forecastList.add(Forecast("2018-1-2", "多云转晴", 34, 14, "图片地址"))
         forecastList.add(Forecast("2018-1-3", "多云转晴", 23, 13, "图片地址"))
         with(fast_test_recycler_view) {
-            adapter = FastAdapter(forecastList, R.layout.item_forecast) { holder: FastAdapter.ViewHolder, bean: Forecast ->
+            adapter = FastAdapter(forecastList, R.layout.item_forecast) { holder: FastAdapter.ViewHolder, bean: Forecast, _ ->
                 with(holder.itemView) {
                     date.text = bean.date
                     description.text = bean.description

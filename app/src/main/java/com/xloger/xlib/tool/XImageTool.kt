@@ -123,18 +123,22 @@ object XImageTool {
     /**
      * 另一种途径根据 uri 得到真实的存储途径
      */
-    fun selectImage(context: Context, uri: Uri?): String? {
-        if (uri != null) {
-            val uriStr = uri.toString()
-            val path = uriStr.substring(10, uriStr.length)
-            if (path.startsWith("com.sec.android.gallery3d")) {
-                Xlog.debug("It's auto backup pic path:" + uri.toString())
-                return null
-            }
+    fun selectImage(context: Context, uri: Uri?): String {
+        if (uri == null) {
+            return ""
+        }
+        val uriStr = uri.toString()
+        val path = uriStr.substring(10, uriStr.length)
+        if (path.startsWith("com.sec.android.gallery3d")) {
+            Xlog.debug("It's auto backup pic path:" + uri.toString())
+            return ""
         }
         val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = context.contentResolver.query(uri!!, filePathColumn, null, null, null)
-        cursor!!.moveToFirst()
+        if (cursor == null) {
+            return ""
+        }
+        cursor.moveToFirst()
         val columnIndex = cursor.getColumnIndex(filePathColumn[0])
         val picturePath = cursor.getString(columnIndex)
         cursor.close()
@@ -173,7 +177,7 @@ object XImageTool {
     /**
      * 配合 chooseImage 方法使用，返回图片真实路径。
      */
-    fun onChooseImageResultooseImageResult(requestCode: Int, resultCode: Int, data: Intent?, context: Context) : String {
+    fun onChooseImageResultooseImageResult(requestCode: Int, resultCode: Int, data: Intent?, context: Context): String {
         var path: String = ""
         val data1 = data?.data
         if (data1 == null) {

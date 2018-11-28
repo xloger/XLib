@@ -22,6 +22,7 @@ class FluxDispatcher {
     fun dispatch(action: FluxAction<*>) = post(action)
 
     private fun post(action: FluxAction<*>) {
+        Xlog.debug("当前注册的Store: ${storeList.map { it.toString() + " " }}")
         storeList.forEach {
             Xlog.debug("接收到Action： ${action.type}, ${action.data}")
             it.onAction(action)
