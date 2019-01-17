@@ -11,7 +11,7 @@ import android.view.ViewGroup
  * Email:phoenix@xloger.com
  * 一个快速开发的通用 Adapter，用于数据量比较少的场景。（未对 findViewById 优化）
  */
-class FastAdapter<T>(val list: List<T>, val layoutResource: Int, val bind: (holder: ViewHolder, t : T, position: Int) -> Unit) : RecyclerView.Adapter<FastAdapter.ViewHolder>() {
+class FastAdapter<T>(val list: List<T>, val layoutResource: Int, val bind: (holder: ViewHolder, bean : T, position: Int) -> Unit) : RecyclerView.Adapter<FastAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layoutResource, parent, false))
     }

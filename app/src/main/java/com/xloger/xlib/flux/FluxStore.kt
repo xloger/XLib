@@ -18,7 +18,7 @@ abstract class FluxStore {
         XEvent.post(changeEvent(type))
     }
 
-    abstract fun changeEvent(type: String = "") : StoreChangeEvent
+    abstract fun changeEvent(type: String = "", vararg any: Any) : StoreChangeEvent
 
     abstract fun onAction(action: FluxAction<*>)
 
