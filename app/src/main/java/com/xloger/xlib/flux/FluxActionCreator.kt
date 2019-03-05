@@ -7,13 +7,13 @@ package com.xloger.xlib.flux
  */
 open class FluxActionCreator(private val fluxDispatcher: FluxDispatcher) {
     companion object {
-        private lateinit var instance: FluxActionCreator
+        private var instance: FluxActionCreator? = null
 
         fun get(fluxDispatcher: FluxDispatcher): FluxActionCreator {
-            if (!this::instance.isInitialized) {
+            if (instance == null) {
                 instance = FluxActionCreator(fluxDispatcher)
             }
-            return instance
+            return instance!!
         }
     }
 }

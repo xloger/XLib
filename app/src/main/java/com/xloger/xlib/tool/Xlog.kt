@@ -14,7 +14,7 @@ import android.widget.Toast
  */
 
 object Xlog {
-    private var isDebug = true
+    public var isDebug = true
     private var isAlwaysShowInvoke = false
     private val TAG = "Xlog>>"
     //TODO 配置成可供修改的
