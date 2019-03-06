@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.xloger.xlib.flux.XEvent
 import java.lang.Exception
 
 /**
@@ -13,6 +14,8 @@ import java.lang.Exception
  * Email:phoenix@xloger.com
  */
 abstract class XBaseFragment : Fragment() {
+    protected open var isRegisterEvent = false
+
     protected lateinit var mRootView: View
 
     protected abstract fun getLayoutId(): Int
@@ -34,11 +37,21 @@ abstract class XBaseFragment : Fragment() {
             }
 
         }
+        if (isRegisterEvent) {
+            XEvent.register(this)
+        }
         return mRootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         afterCreate(savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isRegisterEvent) {
+            XEvent.unregister(this)
+        }
     }
 }
