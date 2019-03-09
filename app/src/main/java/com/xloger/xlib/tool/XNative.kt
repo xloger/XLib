@@ -13,6 +13,9 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import java.text.SimpleDateFormat
 import java.util.*
+import android.support.v4.content.ContextCompat.startActivity
+
+
 
 /**
  * Created on 2018/11/13 17:21.
@@ -21,6 +24,12 @@ import java.util.*
  */
 object XNative {
     private lateinit var photoUri : Uri
+
+    fun callPhone(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        XInit.applicationContext?.startActivity(intent) ?: Xlog.e("XInit 没有正确初始化！")
+    }
 
     fun choosePicture(activity: Activity, requestCode: Int, type: String = "image/jpeg") {
         val intent = Intent(Intent.ACTION_GET_CONTENT)//ACTION_OPEN_DOCUMENT
