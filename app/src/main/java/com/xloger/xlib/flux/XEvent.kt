@@ -29,4 +29,8 @@ object XEvent {
     fun postSticky(any: Any) {
         event.postSticky(any)
     }
+
+    fun removeStickyEvent(any: Any) {
+        event.removeStickyEvent(any)
+    }
 }
