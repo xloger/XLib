@@ -1,10 +1,7 @@
 package com.xloger.xlib.tool
 
 import android.app.Activity
-import android.content.ContentUris
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -29,6 +26,12 @@ object XNative {
         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         XInit.applicationContext?.startActivity(intent) ?: Xlog.e("XInit 没有正确初始化！")
+    }
+
+    fun copy(text: String) {
+        val clipboard = XInit.applicationContext!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val textCd = ClipData.newPlainText("text", text)
+        clipboard.primaryClip = textCd
     }
 
     fun choosePicture(activity: Activity, requestCode: Int, type: String = "image/jpeg") {
