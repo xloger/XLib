@@ -34,6 +34,13 @@ object XNative {
         clipboard.primaryClip = textCd
     }
 
+    fun share(text: String) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text)
+        XInit.applicationContext!!.startActivity(Intent.createChooser(shareIntent, "分享到："))
+    }
+
     fun choosePicture(activity: Activity, requestCode: Int, type: String = "image/jpeg") {
         val intent = Intent(Intent.ACTION_GET_CONTENT)//ACTION_OPEN_DOCUMENT
         intent.addCategory(Intent.CATEGORY_OPENABLE)
