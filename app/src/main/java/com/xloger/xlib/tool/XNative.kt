@@ -34,11 +34,11 @@ object XNative {
         clipboard.primaryClip = textCd
     }
 
-    fun share(text: String) {
+    fun share(activity: Activity, text: String) {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
         shareIntent.putExtra(Intent.EXTRA_TEXT, text)
-        XInit.applicationContext!!.startActivity(Intent.createChooser(shareIntent, "分享到："))
+        activity.startActivity(Intent.createChooser(shareIntent, "分享到："))
     }
 
     fun choosePicture(activity: Activity, requestCode: Int, type: String = "image/jpeg") {
