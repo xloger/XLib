@@ -47,4 +47,5 @@ object XConfig {
         return sp.getBoolean(key, false)
     }
 
+
 }
