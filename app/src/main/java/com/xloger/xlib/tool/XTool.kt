@@ -36,10 +36,11 @@ object XTool {
      * 打印当前时间，可选传入说明
      * 主要用途是方便观察哪里耗时了
      */
-    fun time(description: String = "") {
+    fun time(description: String = "") : String {
         val date = Date(System.currentTimeMillis())
         println(date.toString())
         Xlog.debug("$description 时间：$date")
+        return "${description}${date}"
     }
 
     /**
