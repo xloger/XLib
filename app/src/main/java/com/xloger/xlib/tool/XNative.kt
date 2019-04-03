@@ -53,6 +53,25 @@ object XNative {
         }
     }
 
+    fun chooseVideo(activity: Activity, requestCode: Int) {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)//ACTION_OPEN_DOCUMENT
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.type = "video/*"
+        activity.startActivityForResult(intent, requestCode)
+    }
+
+    fun onChooseVideoResult(requestCode: Int, resultCode: Int, data: Intent?, context: Context): String {
+        var path: String = ""
+        val data1 = data?.data
+        if (data1 == null) {
+            path = ""
+        } else {
+            path = getPath(context, data1) ?: ""
+        }
+        return path
+    }
+
     fun chooseFile() {
 
     }
