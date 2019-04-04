@@ -3,6 +3,8 @@ package com.xloger.xlib.tool
 import android.app.Activity
 import android.content.*
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -11,7 +13,9 @@ import android.provider.MediaStore
 import java.text.SimpleDateFormat
 import java.util.*
 import android.support.v4.content.ContextCompat.startActivity
-
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 
 /**
@@ -205,6 +209,49 @@ object XNative {
             }
         }
         return null
+    }
+
+    /**
+     * 得到视频的缩略图
+     */
+    fun getVideoThumbnail(filePath: String): Bitmap? {
+        var bitmap: Bitmap? = null
+        val retriever = MediaMetadataRetriever()
+        try {
+            retriever.setDataSource(filePath)
+            bitmap = retriever.getFrameAtTime()
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        } catch (e: RuntimeException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                retriever.release()
+            } catch (e: RuntimeException) {
+                e.printStackTrace()
+            }
+
+        }
+        return bitmap
+    }
+
+    fun bitmapToFile(filePath: String, bitmap: Bitmap): Boolean {
+        val file = File(filePath)
+        if (!file.exists()) {
+            val isSuccess = file.createNewFile()
+            if (!isSuccess) {
+                return false
+            }
+        }
+
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
+        val fos = FileOutputStream(file)
+        fos.write(bos.toByteArray())
+        fos.flush()
+        fos.close()
+
+        return true
     }
 
 }
