@@ -2,6 +2,7 @@ package com.xloger.xlib.tool
 
 import android.app.Activity
 import android.content.*
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
@@ -25,6 +26,17 @@ import java.io.FileOutputStream
  */
 object XNative {
     private lateinit var photoUri : Uri
+
+    fun isInstallApp(context: Context, packageName: String) : Boolean {
+        try {
+            context.packageManager.getPackageInfo(packageName, 0)
+            return true
+        } catch (e: PackageManager.NameNotFoundException) {
+            return false
+        }
+
+    }
+
 
     fun callPhone(phone: String) {
         val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))

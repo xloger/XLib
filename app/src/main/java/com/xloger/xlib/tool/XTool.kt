@@ -1,10 +1,15 @@
 package com.xloger.xlib.tool
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.os.Looper
 import android.os.Vibrator
 import java.util.*
+import android.content.Context.ACTIVITY_SERVICE
+
+
 
 /**
  * Created on 2017/5/3 10:33.
@@ -51,5 +56,19 @@ object XTool {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(200)
     }
+
+    fun getSelfPacakgeName(mContext: Context): String {
+        try {
+            val am = mContext
+                    .getSystemService(Activity.ACTIVITY_SERVICE) as ActivityManager
+            val cn = am.getRunningTasks(1).get(0).topActivity
+            return cn.getPackageName()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return ""
+        }
+
+    }
+
 
 }
