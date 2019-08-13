@@ -22,63 +22,23 @@ object Xlog {
     private var toast: Toast? = null
     private var lastTime: Long = 0
 
-    //        StackTraceElement targetElement = new Throwable().getStackTrace()[3];
-    //        String className = targetElement.getClassName();
-    //        String ret = new Formatter()
-    //                .format("%s, %s(%s.java:%d)",
-    //                        Thread.currentThread().getName(),
-    //                        targetElement.getMethodName(),
-    //                        className,
-    //                        targetElement.getLineNumber())
-    //                .toString();
-    private val invokeInfo: String
-        get() {
-            val elements = Thread.currentThread().stackTrace
-            val element = elements[5]
-            return String.format("(%s:%d)#%s ", element.fileName, element.lineNumber, element.methodName)
-        }
-
     fun setAlwaysShowInvoke() {
         isAlwaysShowInvoke = true
     }
 
     fun log(text: String) {
-        log("", text)
+        Logcat.log("", text)
+    }
+
+    fun log(tag: String, text: String) {
+        Logcat.log(tag, text)
     }
 
     fun logWithInvoke(tag: String, text: String) {
-        log(tag, text, true)
+        Logcat.log(tag, text, true)
     }
 
-    @JvmOverloads
-    fun log(tag: String, text: String, isShowInvoke: Boolean = false, level: String = "d") {
-        var invoke = ""
-        if (isShowInvoke || isAlwaysShowInvoke) {
-            invoke = invokeInfo
-        }
-        if (isDebug) {
-            val printTag = "$TAG $tag"
-            //日志长度上限为 4 * 1024，因此超过长度则需拆分。
-            if (text.length < LogSize) {
-                print(printTag, invoke + text, level)
-            } else {
-                val list = text.chunked(LogSize)
-                list.forEachIndexed { index, s ->
-                    print(printTag + index, if (index == 0) invoke + s else s, level)
-                }
-            }
-        }
-    }
 
-    private fun print(tag: String, content: String, level: String) {
-        when (level) {
-            "v" -> Log.v(tag, content)
-            "d" -> Log.d(tag, content)
-            "i" -> Log.i(tag, content)
-            "w" -> Log.w(tag, content)
-            "e" -> Log.e(tag, content)
-        }
-    }
 
     fun debug(text: String) {
         log(text)
@@ -89,11 +49,57 @@ object Xlog {
     }
 
     fun e(tag: String, text: String) {
-        log(tag, text, true, "e")
+        Logcat.log(tag, text, true, "e")
     }
 
     fun e(tag: String, tr: Throwable) {
         e(tag, tr.message ?: "")
+    }
+
+    /**
+     * 日志功能的实现类
+     */
+    private class Logcat {
+        companion object {
+            /**
+             * 调用信息。目前该方案获取的好像不是很准确。
+             */
+            private val invokeInfo: String
+                get() {
+                    val elements = Thread.currentThread().stackTrace
+                    val element = elements[5]
+                    return String.format("(%s:%d)#%s ", element.fileName, element.lineNumber, element.methodName)
+                }
+
+            @JvmOverloads
+            fun log(tag: String, text: String, isShowInvoke: Boolean = false, level: String = "d") {
+                var invoke = ""
+                if (isShowInvoke) {
+                    invoke = invokeInfo
+                }
+                //日志长度上限为 4 * 1024，因此超过长度则需拆分。
+                if (text.length < LogSize) {
+                    print(tag, invoke + text, level)
+                } else {
+                    val list = text.chunked(LogSize)
+                    list.forEachIndexed { index, s ->
+                        print("$tag [$index]", if (index == 0) invoke + s else s, level)
+                    }
+                }
+
+            }
+
+            private fun print(tag: String, content: String, level: String) {
+                when (level) {
+                    "v" -> Log.v(tag, content)
+                    "d" -> Log.d(tag, content)
+                    "i" -> Log.i(tag, content)
+                    "w" -> Log.w(tag, content)
+                    "e" -> Log.e(tag, content)
+                }
+            }
+        }
+
     }
 
     fun toast(text: String) {
