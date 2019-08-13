@@ -12,48 +12,92 @@ import android.widget.Toast
  * Editor:xloger
  * Email:phoenix@xloger.com
  */
-
 object Xlog {
-    public var isDebug = true
+    private var isDebug = true
     private var isAlwaysShowInvoke = false
-    private val TAG = "Xlog>>"
-    //TODO 配置成可供修改的
+    private var TAG = "Xlog>>"
     private var LogSize = 4000
+
     private var toast: Toast? = null
     private var lastTime: Long = 0
 
+    /**
+     * 设置是否为 debug 模式。
+     * 只有当该值为 true 时才输出日志，为 false 时只有当产生 error 日志时会输出。
+     * 推荐 debug 包该值为 true，release 包为 false.
+     * eg: if(BuildConfig.DEBUG) { Xlog.isDebug = true } else { Xlog.isDebug = false }
+     */
+    fun isDebug(isDebug: Boolean) {
+        this.isDebug = isDebug
+    }
+
+    /**
+     * 设置为始终显示调用的堆栈信息
+     */
     fun setAlwaysShowInvoke() {
         isAlwaysShowInvoke = true
     }
 
-    fun log(text: String) {
-        Logcat.log("", text)
+    /**
+     * 设置 TAG 的基础名字
+     */
+    fun setTag(tag: String) {
+        TAG = tag
     }
 
+    /**
+     * 设置一条 Log 最长的尺寸。
+     * 因为控制台对日志的最长尺寸有要求，不得超过 4 * 1024，因此对过长的日志会自动拆分。该参数可以控制默认的尺寸限制，默认为 4000.
+     */
+    fun setLogSize(size: Int = 4000) {
+        LogSize = size
+    }
+
+    fun log(text: String) {
+        log("", text)
+    }
+
+    /**
+     * 记录展示数据，以 info 层级输出。
+     * @param tag log 的分组，可以传入当前 class，也可以以功能区分
+     * @param text 要打印的内容
+     */
     fun log(tag: String, text: String) {
-        Logcat.log(tag, text)
+        Logcat.log(TAG + tag, text, isAlwaysShowInvoke, "i")
     }
 
     fun logWithInvoke(tag: String, text: String) {
-        Logcat.log(tag, text, true)
+        Logcat.log(TAG + tag, text, true, "i")
+    }
+
+
+    /**
+     * 记录展示数据，以 debug 层级输出。推荐临时测试时使用，事后删除。
+     * @param text 要打印的内容
+     */
+    fun debug(text: String) {
+        Logcat.log(TAG, text, isAlwaysShowInvoke, "d")
     }
 
 
 
-    fun debug(text: String) {
-        log(text)
+    /**
+     * 记录展示可能发生的异常，以 error 层级输出。
+     * TODO 将其统计并存为日志或者发送给服务器
+     * @param tag 异常的类型
+     * @param text 异常的描述信息
+     * @param tr 异常本身
+     */
+    fun e(tag: String, text: String, tr: Throwable?) {
+        Logcat.log(TAG + tag, "【$text】" + tr, true, "e")
     }
 
     fun e(text: String) {
-        e("", text)
+        e("", text, null)
     }
 
-    fun e(tag: String, text: String) {
-        Logcat.log(tag, text, true, "e")
-    }
-
-    fun e(tag: String, tr: Throwable) {
-        e(tag, tr.message ?: "")
+    fun e(text: String, tr: Throwable?) {
+        e("", text, tr)
     }
 
     /**
@@ -117,14 +161,9 @@ object Xlog {
      */
     fun toast(context: Context, text: String) {
         if (!XTool.isOnMainThread) {
-            Xlog.e("没有在主线程调用 toast")
+//            Xlog.e("没有在主线程调用 toast")
             Looper.prepare()
             //            return;
-        }
-
-        if (context == null) {
-            Xlog.e("context == null")
-            return
         }
 
         val nowTime = System.currentTimeMillis()
@@ -146,6 +185,11 @@ object Xlog {
         dialog(context, title, message, yesText, noText, "", listener)
     }
 
+    /**
+     * 封装的一个 dialog 方法，很不成熟很不好用，目前我自己一直使用 Anko 提供的 dialog 方法了。
+     * 但是 Anko 存在的一个 bug 还没修复（https://github.com/Kotlin/anko/issues/731），如果再不修复我可能自己重构一下继续用这个了。
+     */
+    @Deprecated("写得太菜，完全比不过 Anko 提供的方法。")
     fun dialog(context: Context, title: String, message: String, yesText: String, noText: String, neutralText: String, listener: DialogOnClickListener) {
         if (!XTool.isOnMainThread) {
             Xlog.e("没有在主线程调用 dialog")

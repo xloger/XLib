@@ -3,7 +3,6 @@ package com.xloger.xlib.tool
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import org.jetbrains.anko.commons.BuildConfig
 
 /**
  * Created on 2019/4/25 15:20.
@@ -23,7 +22,7 @@ object XMap {
     }
 
     fun navigationByBaidu(context: Context, addressName: String, mode: String = "driving") {
-        val intentString = "baidumap://map/direction?destination=${addressName}&coord_type=gcj02&mode=${mode}&src=${XTool.getSelfPacakgeName(context)}"
+        val intentString = "baidumap://map/direction?destination=${addressName}&coord_type=gcj02&mode=${mode}&src=${XTool.getSelfPackageName(context)}"
         try {
             val intent = Intent()
             intent.setData(Uri.parse(intentString))
@@ -35,7 +34,7 @@ object XMap {
     }
 
     fun navigationByAmap(context: Context, addressName: String,lat: String, lng : String, mode: String = "driving") {
-        val intentString = "amapuri://route/plan/?dname=${addressName}&dlat=${lat}&lng=${lng}&dev=0&coord_type=gcj02&t=0&sourceApplication=${XTool.getSelfPacakgeName(context)}"
+        val intentString = "amapuri://route/plan/?dname=${addressName}&dlat=${lat}&lng=${lng}&dev=0&coord_type=gcj02&t=0&sourceApplication=${XTool.getSelfPackageName(context)}"
         try {
             val intent = Intent()
             intent.setData(Uri.parse(intentString))

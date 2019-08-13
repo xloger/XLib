@@ -57,7 +57,7 @@ object XTool {
         vibrator.vibrate(200)
     }
 
-    fun getSelfPacakgeName(mContext: Context): String {
+    fun getSelfPackageName(mContext: Context): String {
         try {
             val am = mContext
                     .getSystemService(Activity.ACTIVITY_SERVICE) as ActivityManager

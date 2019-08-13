@@ -18,7 +18,7 @@ class XNotification(val context: Context = XInit.applicationContext!!) {
     private var id = XTool.randomInt(1000)
     lateinit var builder: NotificationCompat.Builder
 
-    val channelId = "huwo"
+    val channelId = "xpush"
     val channelName = "push"
 
     fun create(title: String, content: String, @DrawableRes iconId: Int): XNotification {
