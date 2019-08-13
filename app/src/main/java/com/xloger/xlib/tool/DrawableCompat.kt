@@ -39,6 +39,9 @@ inline fun AnkoContext<*>.drawable(@DrawableRes id: Int) = ctx.drawable(id)
 inline fun Fragment.drawable(@DrawableRes id: Int) = activity?.drawable(id)
 inline fun View.drawable(@DrawableRes id: Int) = context.drawable(id)
 
+/**
+ * 使用指定颜色对 Drawable 着色
+ */
 fun Drawable.tint(color: Int, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_IN) {
     mutate().setColorFilter(color, mode)
 }
