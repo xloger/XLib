@@ -75,8 +75,12 @@ object Xlog {
      * 记录展示数据，以 debug 层级输出。推荐临时测试时使用，事后删除。
      * @param text 要打印的内容
      */
+    fun debug(tag: String, text: String) {
+        Logcat.log(TAG + tag, text, isAlwaysShowInvoke, "d")
+    }
+
     fun debug(text: String) {
-        Logcat.log(TAG, text, isAlwaysShowInvoke, "d")
+        debug("", text)
     }
 
 
