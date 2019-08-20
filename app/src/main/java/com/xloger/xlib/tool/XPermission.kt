@@ -2,13 +2,23 @@ package com.xloger.xlib.tool
 
 import android.Manifest
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 
 import java.util.ArrayList
+import android.provider.Settings.ACTION_SETTINGS
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.Intent.CATEGORY_DEFAULT
+import android.provider.Settings
+import android.provider.SyncStateContract
+import com.xloger.xlib.BuildConfig
+import java.lang.Exception
+
 
 /**
  * Created on 2017/4/25 14:12.
@@ -163,5 +173,98 @@ object XPermission {
         fun onSuccess()
 
         fun onRefuse(deniedPermissions: List<String>)
+    }
+
+    /**
+     * 当权限被拒绝时，跳转到各 ROM 的设置页
+     * 代码参考于<https://blog.csdn.net/donkor_/article/details/79374442>、<https://juejin.im/entry/5a9fb306f265da239d48d936>
+     * TODO 通过判断机型的方式并不准确，可能用户刷了 ROM。
+     */
+    public fun openPermissionConfigView(context: Context) {
+        val intent = Intent()
+        var comp: ComponentName?
+        when (Build.MANUFACTURER) {
+            ROMConstants.ROM_HUAWEI // 华为
+            -> {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+                comp = ComponentName("com.huawei.systemmanager",
+                        "com.huawei.permissionmanager.ui.MainActivity")
+                intent.setComponent(comp)
+            }
+            ROMConstants.ROM_MEIZU // 魅族
+            -> {
+                intent.setAction("com.meizu.safe.security.SHOW_APPSEC")
+                intent.addCategory(Intent.CATEGORY_DEFAULT)
+                intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+            }
+            ROMConstants.ROM_XIAOMI // 小米
+            -> {
+                intent.setAction("miui.intent.action.APP_PERM_EDITOR")
+                intent.setClassName("com.miui.securitycenter",
+                        "com.miui.permcenter.permissions.PermissionsEditorActivity")
+                intent.putExtra("extra_pkgname", context.getPackageName())
+            }
+            ROMConstants.ROM_SONY // 索尼
+            -> {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+                comp = ComponentName("com.sonymobile.cta",
+                        "com.sonymobile.cta.SomcCTAMainActivity")
+                intent.setComponent(comp)
+            }
+            ROMConstants.ROM_OPPO // oppo
+            -> {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+                comp = ComponentName("com.color.safecenter",
+                        "com.color.safecenter.permission.PermissionManagerActivity")
+                intent.setComponent(comp)
+            }
+            ROMConstants.ROM_LG // LG
+            -> {
+                intent.setAction("android.intent.action.MAIN")
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+                comp = ComponentName("com.android.settings",
+                        "com.android.settings.Settings\$AccessLockSummaryActivity")
+                intent.setComponent(comp)
+            }
+            ROMConstants.ROM_LETV // 乐视
+            -> {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+                comp = ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.PermissionAndApps")
+                intent.setComponent(comp)
+            }
+            else -> {
+                // 跳转权限设置界面
+                intent.setAction(Settings.ACTION_SETTINGS)
+            }
+        }
+        try {
+            context.startActivity(intent)
+        } catch (ex: Exception) {
+            Xlog.e("跳转到权限授予页失败", ex)
+        }
+    }
+
+    object ROMConstants {
+        val ROM_HUAWEI = "HUAWEI"
+        val ROM_MEIZU = "Meizu"
+        val ROM_XIAOMI = "Xiaomi"
+        val ROM_SONY = "Sony"
+        val ROM_OPPO = "OPPO"
+        val ROM_LG = "LG"
+        val ROM_LETV = "LeMobile"
+
+
+//        val ROM_MIUI = "MIUI"
+//        val ROM_EMUI = "EMUI"
+//        val ROM_FLYME = "FLYME"
+//        val ROM_OPPO = "OPPO"
+//        val ROM_SMARTISAN = "SMARTISAN"
+//        val ROM_VIVO = "VIVO"
+//        val ROM_QIKU = "QIKU"
     }
 }
